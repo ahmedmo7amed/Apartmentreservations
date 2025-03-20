@@ -41,11 +41,15 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        $token = $user->createToken($request->name);
 
         event(new Registered($user));
 
         Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+    return [
+      'user' => $user,
+      'token' => $token->plainTextToken,
+    ];
+        //return redirect(route('dashboard', absolute: false));
     }
 }

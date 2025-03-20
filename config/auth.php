@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
+        'guard' => env('AUTH_GUARD', 'web' ),
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
@@ -35,13 +35,17 @@ return [
     |
     */
 
-    'guards' => [
+    'guards' => [ // Corrected from 'gurads' to 'guards'
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-    ],
 
+        'customers' => [ // للعملاء (customers)
+            'driver' => 'session',
+            'provider' => 'customers',
+        ],
+    ],
     /*
     |--------------------------------------------------------------------------
     | User Providers
@@ -65,11 +69,11 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'customers'=> [
+       'driver' => 'eloquent',
+        'model'  =>  App\Models\Customer::class,
     ],
+        ],
 
     /*
     |--------------------------------------------------------------------------
@@ -97,8 +101,15 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
-    ],
 
+    'customers' => [
+
+        'provider' => 'customers',
+        'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+        'expire' => 60,
+        'throttle' => 60,
+    ],
+],
     /*
     |--------------------------------------------------------------------------
     | Password Confirmation Timeout
